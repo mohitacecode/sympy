@@ -1478,3 +1478,7 @@ def test_issue_16878b():
     # that handles the base_set of S.Reals like there is
     # for Integers
     assert imageset(x, (x, x), S.Reals).is_subset(S.Reals**2) is True
+def test_issue_18064():
+    # In FiniteSet Class there is no method called factor
+    s = FiniteSet(x**2 + x)
+    assert s.factor() == "{x⋅(x + 1)}"
