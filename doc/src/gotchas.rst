@@ -814,7 +814,7 @@ Notice how $c$ is not replaced first below and thus derivatives are left in the 
     >>> repr(expr.subs({q1: a, q1.diff(): a*b*c, q1.diff().diff(): c}))
     'a*b*c*Derivative(q2(t), t) + a*Derivative(a*b*c, t)**2'
 
-Notice how all the $q_1$ are replaced with $a$, even "inside" the derivatives:
+Notice how all the q_1 are replaced with a, even "inside" the derivatives:
     >>> expr.subs({q1: a})
 .. math::
     $\displaystyle a \left(\frac{d^{2}}{d t^{2}} a\right)^{2} + \frac{d}{d t} a \frac{d}{d t} \operatorname{q_{2}}{\left(t \right)}$
