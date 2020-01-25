@@ -792,21 +792,21 @@ Be careful about substituting for derivatives!
     >>> a, b, c = sm.symbols('a, b, c')
     >>> expr = q1.diff().diff()**2*q1 + q1.diff()*q2.diff()
     >>> expr
-.. math::  
+.. math::
     $\displaystyle \operatorname{q_{1}}{\left(t \right)} \left(\frac{d^{2}}{d t^{2}} \operatorname{q_{1}}{\left(t \right)}\right)^{2} + \frac{d}{d t} \operatorname{q_{1}}{\left(t \right)} \frac{d}{d t} \operatorname{q_{2}}{\left(t \right)}$
 
 It is worth looking at the raw form (the non-rendered form) to see what is going on:
-    
+
     >>> repr(expr)
     'q1(t)*Derivative(q1(t), (t, 2))**2 + Derivative(q1(t), t)*Derivative(q2(t), t)'
 
  We are going to be substiting expressions for $q$'s, $\dot{q}$'s, and $\dot{u}$'s. There are a couple of key things to be aware of:
-    
+
       *subs() and xreplace() do not substitute the expression in a fixed order (i.e. Python dictionaries are not ordered), so if you pass in more than one item in a single subs() call, things might get substituted in an unexpected order.
       *If you have a dynamicsymbol and its deritivate in an expression and substitute something for the symbol, it will get replaced inside the derivative too.
 
 Notice how $c$ is not replaced first below and thus derivatives are left in the expression:
-    
+
     >>> expr.subs({q1: a, q1.diff(): a*b*c, q1.diff().diff(): c})
 .. math::
     $\displaystyle a b c \frac{d}{d t} \operatorname{q_{2}}{\left(t \right)} + a \left(\frac{\partial}{\partial t} a b c\right)^{2}$
