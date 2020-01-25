@@ -793,7 +793,7 @@ Be careful about substituting for derivatives!
     >>> expr = q1.diff().diff()**2*q1 + q1.diff()*q2.diff()
     >>> expr
 .. math::
-    $\displaystyle \operatorname{q_{1}}{\left(t \right)} \left(\frac{d^{2}}{d t^{2}} \operatorname{q_{1}}{\left(t \right)}\right)^{2} + \frac{d}{d t} \operatorname{q_{1}}{\left(t \right)} \frac{d}{d t} \operatorname{q_{2}}{\left(t \right)}$
+    \displaystyle \operatorname{q_{1}}{\left(t \right)} \left(\frac{d^{2}}{d t^{2}} \operatorname{q_{1}}{\left(t \right)}\right)^{2} + \frac{d}{d t} \operatorname{q_{1}}{\left(t \right)} \frac{d}{d t} \operatorname{q_{2}}{\left(t \right)}
 
 It is worth looking at the raw form (the non-rendered form) to see what is going on:
 
