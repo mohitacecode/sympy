@@ -800,7 +800,7 @@ It is worth looking at the raw form (the non-rendered form) to see what is going
     >>> repr(expr)
     'q1(t)*Derivative(q1(t), (t, 2))**2 + Derivative(q1(t), t)*Derivative(q2(t), t)'
 
-We are going to be substiting expressions for $q$'s, $\dot{q}$'s, and $\dot{u}$'s. There are a couple of key things to be aware of:
+We are going to be substiting expressions for q's, \dot{q}'s, and \dot{u}'s. There are a couple of key things to be aware of:
 
       *subs() and xreplace() do not substitute the expression in a fixed order (i.e. Python dictionaries are not ordered), so if you pass in more than one item in a single subs() call, things might get substituted in an unexpected order.
       *If you have a dynamicsymbol and its deritivate in an expression and substitute something for the symbol, it will get replaced inside the derivative too.
