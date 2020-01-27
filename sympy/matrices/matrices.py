@@ -81,6 +81,7 @@ class MatrixDeterminant(MatrixCommon):
     """Provides basic matrix determinant operations. Should not be instantiated
     directly. See ``determinant.py`` for their implementations."""
 
+<<<<<<< HEAD
     def _find_reasonable_pivot(self, iszerofunc=_iszero, simpfunc=_simplify):
         return _find_reasonable_pivot(self, iszerofunc=iszerofunc,
                 simpfunc=iszerofunc)
@@ -89,6 +90,8 @@ class MatrixDeterminant(MatrixCommon):
         return _find_reasonable_pivot_naive(self, iszerofunc=iszerofunc,
                 simpfunc=simpfunc)
 
+=======
+>>>>>>> upstream/master
     def _eval_det_bareiss(self, iszerofunc=_is_zero_after_expand_mul,
             dotprodsimp=None):
         return _det_bareiss(self, iszerofunc=iszerofunc,
@@ -168,6 +171,7 @@ class MatrixReductions(MatrixDeterminant):
     rank.__doc__         = _rank.__doc__
     rref.__doc__         = _rref.__doc__
 
+<<<<<<< HEAD
     def _eval_col_op_swap(self, col1, col2):
         def entry(i, j):
             if j == col1:
@@ -214,6 +218,8 @@ class MatrixReductions(MatrixDeterminant):
             return self[i, j]
         return self._new(self.rows, self.cols, entry)
 
+=======
+>>>>>>> upstream/master
     def _normalize_op_args(self, op, col, k, col1, col2, error_str="col"):
         """Validate the arguments for a row/column operation.  ``error_str``
         can be one of "row" or "col" depending on the arguments being parsed."""
@@ -233,7 +239,11 @@ class MatrixReductions(MatrixDeterminant):
             if not 0 <= col < self_cols:
                 raise ValueError("This matrix doesn't have a {} '{}'".format(error_str, col))
 
+<<<<<<< HEAD
         if op == "n<->m":
+=======
+        elif op == "n<->m":
+>>>>>>> upstream/master
             # we need two cols to swap. It doesn't matter
             # how they were specified, so gather them together and
             # remove `None`
@@ -250,7 +260,11 @@ class MatrixReductions(MatrixDeterminant):
             if not 0 <= col2 < self_cols:
                 raise ValueError("This matrix doesn't have a {} '{}'".format(error_str, col2))
 
+<<<<<<< HEAD
         if op == "n->n+km":
+=======
+        elif op == "n->n+km":
+>>>>>>> upstream/master
             col = col1 if col is None else col
             col2 = col1 if col2 is None else col2
             if col is None or col2 is None or k is None:
@@ -264,8 +278,62 @@ class MatrixReductions(MatrixDeterminant):
             if not 0 <= col2 < self_cols:
                 raise ValueError("This matrix doesn't have a {} '{}'".format(error_str, col2))
 
+<<<<<<< HEAD
         return op, col, k, col1, col2
 
+=======
+        else:
+            raise ValueError('invalid operation %s' % repr(op))
+
+        return op, col, k, col1, col2
+
+    def _eval_col_op_multiply_col_by_const(self, col, k):
+        def entry(i, j):
+            if j == col:
+                return k * self[i, j]
+            return self[i, j]
+        return self._new(self.rows, self.cols, entry)
+
+    def _eval_col_op_swap(self, col1, col2):
+        def entry(i, j):
+            if j == col1:
+                return self[i, col2]
+            elif j == col2:
+                return self[i, col1]
+            return self[i, j]
+        return self._new(self.rows, self.cols, entry)
+
+    def _eval_col_op_add_multiple_to_other_col(self, col, k, col2):
+        def entry(i, j):
+            if j == col:
+                return self[i, j] + k * self[i, col2]
+            return self[i, j]
+        return self._new(self.rows, self.cols, entry)
+
+    def _eval_row_op_swap(self, row1, row2):
+        def entry(i, j):
+            if i == row1:
+                return self[row2, j]
+            elif i == row2:
+                return self[row1, j]
+            return self[i, j]
+        return self._new(self.rows, self.cols, entry)
+
+    def _eval_row_op_multiply_row_by_const(self, row, k):
+        def entry(i, j):
+            if i == row:
+                return k * self[i, j]
+            return self[i, j]
+        return self._new(self.rows, self.cols, entry)
+
+    def _eval_row_op_add_multiple_to_other_row(self, row, k, row2):
+        def entry(i, j):
+            if i == row:
+                return self[i, j] + k * self[row2, j]
+            return self[i, j]
+        return self._new(self.rows, self.cols, entry)
+
+>>>>>>> upstream/master
     def elementary_col_op(self, op="n->kn", col=None, k=None, col1=None, col2=None):
         """Performs the elementary column operation `op`.
 
@@ -3986,6 +4054,7 @@ def classof(A, B):
 def a2idx(j, n=None):
     from sympy.matrices.common import a2idx as a2idx_
     return a2idx_(j, n)
+<<<<<<< HEAD
 
 def randMatrixBigDiag(rows, cols=None, lo=0, hi=100, symmetric=False):
     from sympy.matrices.dense import diag
@@ -4099,3 +4168,5 @@ def lower(a, diag=0):
         for j in range(i + i0, a.cols):
             b[i, j] = 0
     return b
+=======
+>>>>>>> upstream/master
