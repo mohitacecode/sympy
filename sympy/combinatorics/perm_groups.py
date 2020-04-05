@@ -3,7 +3,7 @@ from __future__ import print_function, division
 from random import randrange, choice
 from math import log
 from sympy.ntheory import primefactors
-from sympy import multiplicity, factorint
+from sympy import multiplicity, factorint, sympify
 
 from sympy.combinatorics import Permutation
 from sympy.combinatorics.permutations import (_af_commutes_with, _af_invert,
@@ -5075,3 +5075,102 @@ def _stabilizer(degree, generators, alpha):
     return [_af_new(x) for x in stab_gens]
 
 PermGroup = PermutationGroup
+
+class Cosets(Basic):
+
+    """A coset of a permutation group with respect to an element.
+
+    Parameters
+    ==========
+
+    g : Permutation
+
+    H : PermutationGroup
+
+    dir : "+" or "-", If not specified by default it will be "+"
+        Here dir specified the type of coset "+" represent the
+        right coset and "-" represent the left coset.
+
+    G : PermutationGroup, optional
+        The group which contains *H* as its subgroup and *g* as its
+        element.
+
+        If not specified, it would automatically become a symmetric
+        group ``SymmetricGroup(g.size)`` and
+        ``SymmetricGroup(H.degree)`` if ``g.size`` and ``H.degree``
+        are matching.
+    """
+    def __new__(cls, g, H, G=None, dir = "+"):
+        from sympy.combinatorics.named_groups import SymmetricGroup
+        g = sympify(g)
+        if not isinstance(g, Permutation):
+            raise NotImplementedError
+
+        H = sympify(H)
+        if not isinstance(H, PermutationGroup):
+            raise NotImplementedError
+
+        if G is not None:
+            G = sympify(G)
+            if not isinstance(G, PermutationGroup):
+                raise NotImplementedError
+            if not H.is_subgroup(G):
+                raise ValueError("{} must be a subgroup of {}.".format(H, G))
+            if g not in G:
+                raise ValueError("{} must be an element of {}.".format(g, G))
+        else:
+            g_size = g.size
+            h_degree = H.degree
+            if g_size != h_degree:
+                raise ValueError(
+                    "The size of the permutation {} and the degree of "
+                    "the permutation group {} should be matching "
+                    .format(g, H))
+            G = SymmetricGroup(g.size)
+
+        if dir == "+":
+            return RightCoset(H, g, G)
+        else:
+            return LeftCoset(g, H, G)
+
+class RightCoset(Basic):
+    def __new__(cls, H, g, G = None):
+        return Basic.__new__(cls, g, H, G)
+
+    def __init__(self, H, g, G = None):
+        self.list_repr = self._aslist(H, g)
+
+    def __contains__(self, i):
+        """
+        Check if an element is present in a Coset or not.
+        """
+        if not isinstance(i,Permutation):
+            raise TypeError("Element should be of type {} but it is {}".format("Permutation",type(i)))
+        return i in self.list_repr
+
+    def _aslist(self, H, g):
+        cst = []
+        for h in H.elements:
+            cst.append(h*g)
+        return cst
+
+class LeftCoset(Basic):
+    def __new__(cls, g, H, G = None):
+        return Basic.__new__(cls, g, H, G)
+
+    def __init__(self, g, H, G = None):
+        self.list_repr = self._aslist(g, H)
+
+    def __contains__(self, i):
+        """
+        Check if an element is present in a Coset or not.
+        """
+        if not isinstance(i,Permutation):
+            raise TypeError("Element should be of type {} but it is {}".format("Permutation",type(i)))
+        return i in self.list_repr
+
+    def _aslist(self, g, H):
+        cst = []
+        for h in H.elements:
+            cst.append(g*h)
+        return cst
